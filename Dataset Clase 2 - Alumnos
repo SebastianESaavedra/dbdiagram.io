@@ -1,0 +1,55 @@
+Table dim_alumno {
+  id_alumno int [pk, unique] 
+  Nombre varchar(30) [not null]
+  Apellido varchar(30) [not null]
+  FechaNacimiento date [not null]
+  //Aca tengo duda si conviene guardar la información de la edad del estudiante como Fecha o Edad numerica//
+  Edad int [not null]
+  Genero varchar(35) [not null]
+}
+Ref: dim_alumno.id_alumno < fact_promedio.id_alumno
+
+Table dim_tiempo {
+  id_tiempo timestamp [pk]
+  Dia int [not null]
+  Mes varchar(20) [not null]
+  Anio varchar(15) [not null]
+  Cuatrimestre varchar(30) [not null]
+}
+Ref: dim_tiempo.id_tiempo < fact_promedio.id_tiempo
+
+Table dim_materia {
+  id_materia int [pk, unique]
+  NombreMateria varchar(60) [not null]
+  AnioEscolar varchar(15)
+}
+ 
+Table dim_profesor {
+  id_profesor int [pk, unique]
+  NombreProfesor varchar(30) [not null]
+  ApellidoProfesor varchar(30) [not null]
+  id_materia int
+}
+Ref: dim_profesor.id_materia < dim_materia.id_materia
+Ref: dim_profesor.id_profesor < fact_promedio.id_profesor
+// Aca quise expresar que un profesor puede dar una o más materias//
+
+Table dim_examen {
+  id_examen int [pk, unique]
+  Modalidad varchar (15) [not null]
+  FechaExamen datetime [not null]
+  Nota float [not null]
+  id_profesor int
+  id_alumno int
+}
+Ref: dim_examen.id_examen < fact_promedio.id_examen
+ 
+Table fact_promedio{
+  id_alumno int
+  id_materia int
+  id_tiempo timestamp
+  id_examen int
+  id_profesor int
+  PromedioAlumno float [not null]
+}
+//La tabla hechos de promedio incorporaria y relacionaria toda la información de las tablas aledañas y guardaria el promedio de cada alumno segun materia//
