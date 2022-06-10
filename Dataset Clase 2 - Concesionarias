@@ -1,0 +1,48 @@
+Table dim_automotor{
+  id_automotor int [pk, unique]
+  Patente varchar(15) [not null]
+  // La patente podria ser la PK ? y reemplazar al id_automotor//
+  Marca varchar(30) [not null]
+  MontoVenta int [not null]
+  Color varchar(20) [not null]
+  }
+  
+Table dim_concesionaria{
+  id_concesionaria int [pk, unique]
+  NombreConcesionaria varchar(30) [not null]
+  Direccion varchar (50) [not null]
+  Provincia varchar (30)
+  Localidad varchar (30)
+}
+
+
+Table dim_cliente{
+  id_cliente int [pk, unique] // conviene usar el DNI como PK?//
+  NombreCliente varchar(30) [not null]
+  ApellidoCliente varchar(30) [not null]
+  Telefono varchar (40) [not null]
+  CodigoArea int 
+  CorreoElectronico varchar (50) 
+} 
+
+Table dim_tiempo{
+  id_tiempo timestamp [pk]
+  Dia int [not null]
+  Mes varchar(20) [not null]
+  Anio varchar(15) [not null]
+}
+
+Table fact_venta{
+  id_automotor int 
+  id_cliente int 
+  id_concesionaria int 
+  id_tiempo timestamp
+  FechaVenta date [not null]
+  CantidadVendida int [not null]
+  TotalIVA float [not null]
+}
+
+Ref: dim_automotor.id_automotor > fact_venta.id_automotor
+Ref: dim_cliente.id_cliente < fact_venta.id_cliente
+Ref: dim_concesionaria.id_concesionaria <  fact_venta.id_concesionaria
+Ref: dim_tiempo.id_tiempo < fact_venta.id_tiempo
